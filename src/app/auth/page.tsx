@@ -1,9 +1,15 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'  
 import { createClient } from '@/lib/supabase'
 
 export default function AuthPage() {
   const supabase = createClient()
+
+   useEffect(() => {
+    console.log('NEXT_PUBLIC_SUPABASE_URL:', process.env.NEXT_PUBLIC_SUPABASE_URL)
+    console.log('NEXT_PUBLIC_SUPABASE_ANON_KEY:', process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.slice(0, 10) + '...')
+  }, [])
+
   const [email, setEmail] = useState('')
   const [sent, setSent] = useState(false)
 
