@@ -1,10 +1,17 @@
 import { createBrowserClient } from '@supabase/ssr'
 
-const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.replace(/^PREFIX_/, '')
+// const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.replace(/^PREFIX_/, '')
+
+// export const createClient = () => {
+//   return createBrowserClient(
+//     process.env.NEXT_PUBLIC_SUPABASE_URL!,
+//     key! // <-- usa a chave ajustada
+//   )
+// }
 
 export const createClient = () => {
   return createBrowserClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    key! // <-- usa a chave ajustada
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
   )
 }
