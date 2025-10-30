@@ -4,7 +4,7 @@ console.log('🔎 NEXT_PUBLIC_SUPABASE_URL:', process.env.NEXT_PUBLIC_SUPABASE_U
 console.log('🔎 NEXT_PUBLIC_SUPABASE_ANON_KEY:', process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  /* config options here! */
   reactCompiler: true,
 };
 
