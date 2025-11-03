@@ -25,16 +25,19 @@ export default function AuthPage() {
   }
 
   const handleGoogle = async () => {
-    console.log('[auth] signInWithOAuth google start')
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: { redirectTo: process.env.NEXT_PUBLIC_SITE_URL },
-    })
-    if (error) {
-      console.error('[auth] signInWithOAuth error:', error.message)
-      alert(error.message)
-    }
+  console.log('[auth] signInWithOAuth google start')
+  const { error } = await supabase.auth.signInWithOAuth({
+    provider: 'google',
+    options: {
+      redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`,
+    },
+  })
+  if (error) {
+    console.error('[auth] signInWithOAuth error:', error.message)
+    alert(error.message)
   }
+}
+
 
   if (loading) return <p className="text-center mt-20">Carregando…</p>
 
