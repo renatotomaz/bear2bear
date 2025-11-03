@@ -1,34 +1,28 @@
 'use client'
-import { useState, useEffect } from 'react'  
+import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase'
 import { syncUserProfile } from '@/lib/profile'
 
-
 export default function AuthPage() {
   const supabase = createClient()
-
-  useEffect(() => {
-  const { data: listener } = supabase.auth.onAuthStateChange(async (event) => {
-    if (event === 'SIGNED_IN') {
-      await syncUserProfile()
-      window.location.href = '/dashboard'
-    }
-  })
-  return () => listener.subscription.unsubscribe()
-}, [])
-
-
-
   const [email, setEmail] = useState('')
   const [sent, setSent] = useState(false)
+
+  useEffect(() => {
+    const { data: listener } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if (event === 'SIGNED_IN' && session?.user) {
+        await syncUserProfile()
+        window.location.href = '/dashboard'
+      }
+    })
+    return () => listener.subscription.unsubscribe()
+  }, [supabase])
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
     const { error } = await supabase.auth.signInWithOtp({
       email,
-      options: {
-        emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`,
-      },
+      options: { emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback` },
     })
     if (!error) setSent(true)
     else alert(error.message)
@@ -37,9 +31,7 @@ export default function AuthPage() {
   const handleGoogleLogin = async () => {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
-      options: {
-        redirectTo: process.env.NEXT_PUBLIC_SITE_URL,
-      },
+      options: { redirectTo: process.env.NEXT_PUBLIC_SITE_URL },
     })
     if (error) alert(error.message)
   }
